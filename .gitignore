@@ -1,0 +1,6 @@
+local_settings.py
+.DS_Store
+venv
+db.sqlite3
+.env
+settings.py

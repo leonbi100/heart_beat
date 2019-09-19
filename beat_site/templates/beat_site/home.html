@@ -1,0 +1,66 @@
+{% load static %}
+
+<html style="background-color: #659DBD">
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {
+        'packages':['geochart'],
+        'mapsApiKey': 'AIzaSyBfVqEwUJ55bkc9_jmBJmR0sk9N6SO-Z6I'
+      });
+      google.charts.setOnLoadCallback(drawRegionsMap);
+
+      function drawRegionsMap() {
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn('string', 'Country');
+        dataTable.addColumn('number', 'Rate (per 1,000 live births)');
+        dataTable.addRows([
+            {% for country in country_list %}
+            ['{{country.name}}',{{country.curr_rate}}],
+            {% endfor %}
+        ]);
+
+        var view = new google.visualization.DataView(dataTable);
+        view.setColumns([0, 1]);
+
+        var options = {
+            colorAxis: {colors: ['white', '#AC3B61']},
+            backgroundColor: { fill:'transparent' },
+            tooltip: { isHtml: true },
+            datalessRegionColor: 'grey',
+        };
+
+        var chart = new google.visualization.GeoChart(document.getElementById('id_map'));
+
+        function myClickHandler(){
+            var selection = chart.getSelection()[0];
+            var country = dataTable.getValue(selection.row, 0);
+            if (country != 'United States'){
+              alert('Sorry no file for ' + country);
+            }
+            else{
+              document.getElementById("US").style.display = "block";
+              var audio= document.getElementById("US");
+              audio.play();
+            }
+            return country;
+        }
+
+        google.visualization.events.addListener(chart, 'select', myClickHandler);
+
+        chart.draw(view, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div style="text-align: center;">
+      <h1>Sonification of Infant Mortality Rates</h1>
+      <audio controls style="display: none; position:absolute;
+ " id='US'>
+        <source src="{% static 'beat_site/Sound_Logo.mp3' %}" type="audio/mp3">
+        Your browser does not support the audio element.
+      </audio>
+      <div id="id_map" style="width: 1000px; height: 600px; display: inline-block;"></div>
+    </div>
+  </body>
+</html>
