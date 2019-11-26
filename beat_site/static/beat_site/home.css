@@ -1,0 +1,310 @@
+html, body {
+  font-family: 'B612', sans-serif;
+  color: white;
+  font-size: 18px;
+  line-height: 28px;
+  scroll-behavior: smooth;
+}
+
+h1 {
+  font-family: 'B612', sans-serif;
+  color: white;
+  text-align: center;
+  font-size: 200px;
+  font-weight: 800;
+  line-height: 200px;
+}
+
+.title {
+  font-family: 'B612', sans-serif;
+  color: white;
+  -webkit-animation: fadein 4s;
+  padding-left: 100px;
+  padding-right: 800px;
+}
+
+.page-title {
+  font-family: 'B612', sans-serif;
+  -webkit-animation: fadein 4s;
+  padding-bottom: 50px
+}
+
+.map {
+  -webkit-animation: fadein 2s;
+  width: 700px 
+}
+
+.MainContainer {
+  perspective: 1px;
+  transform-style: preserve-3d;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.ContentContainer {
+  position: relative;
+  display: block;
+  background-color: white;
+  z-index: 1;
+}
+
+.Content {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 75px 0;
+}
+
+p {
+  margin: 75px 0;
+  font-size: 18px;
+  font-family: 'B612', sans-serif;
+  color: white;
+}
+
+.ParallaxContainer {
+  display: flex;
+  flex: 1 0 auto;
+  position: relative;
+  z-index: -1;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  transform: translateZ(-1px) scale(2);
+  background: rgb(36, 48, 94);
+}
+
+.LightParallaxContainer {
+  display: flex;
+  flex: 1 0 auto;
+  position: relative;
+  z-index: -1;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  transform: translateZ(-1px) scale(2);
+  background: rgb(168, 208, 230);
+}
+
+@keyframes fadein {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@bg: #2d2d37; // Dark blue
+@primary: #fd6b21; // Orange
+
+body { background: @bg;}
+a { color: white; text-decoration: none; }
+
+.arrow {
+  text-align: center;
+  margin: 8% 0;
+}
+.bounce {
+  -moz-animation: bounce 2s infinite;
+  -webkit-animation: bounce 2s infinite;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+}
+
+/**
+ *   Heart container
+ *   Change the size here
+ */
+
+.heart {
+  background: rgb(168, 208, 230);
+  height: 195px;
+  margin: 1em auto;
+  position: relative;
+  text-align: center;
+  width: 200px;
+}
+/**
+ *   Building blocks of the heart - rounded rectangles
+ */
+
+.heart::before,
+.heart::after {
+  background: rgb(247, 108, 108);
+  box-shadow: -4px -7px 5px 0 rgb(64,64,64) inset;
+  content: "";
+  height: 80%;
+  left: 25%;
+  position: absolute;
+  top: 2%;
+  width: 50%;
+  border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  /* performance boost hardware acceleration activated in 3D */
+  transform: translateZ(0) rotate(-45deg);
+  transform-origin: 50% 68.75% 0;
+}
+
+.heart::after {
+  transform: translateZ(0) rotate(45deg);
+  box-shadow: -7.5px 5px 7px 0 rgb(64,64,64) inset;
+}
+
+.heart.active::before {
+  animation: heartbeats-before 5.85s linear 0s 1;
+}
+
+.heart.active::after {
+  animation: heartbeats-after 5.85s linear 0s 1;
+}
+
+@keyframes heartbeats-before {
+  3% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(-45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  8.2% {
+    background-color: orange;
+    transform: rotate(-45deg) scale(0.8);
+    border-radius: 70% 70% 70% 0 / 70% 70% 10% 0;
+  }
+  13.7% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(-45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  25% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(-45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  30% {
+    background-color: orange;
+    transform: rotate(-45deg) scale(0.8);
+    border-radius: 70% 70% 70% 0 / 70% 70% 10% 0;
+  }
+  36% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(-45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  44.4% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(-45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  49.6% {
+    background-color: orange;
+    transform: rotate(-45deg) scale(0.8);
+    border-radius: 70% 70% 70% 0 / 70% 70% 10% 0;
+  }
+  56.4% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(-45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  66.7% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(-45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  71.8% {
+    background-color: orange;
+    transform: rotate(-45deg) scale(0.8);
+    border-radius: 70% 70% 70% 0 / 70% 70% 10% 0;
+  }
+  77% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(-45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+}
+
+@keyframes heartbeats-after {
+  3% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  8.2% {
+    background-color: orange;
+    transform: rotate(45deg) scale(0.8);
+    border-radius: 70% 70% 0 70% / 70% 70% 0 10%;
+  }
+  13.7% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  25% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  30% {
+    background-color: orange;
+    transform: rotate(45deg) scale(0.8);
+    border-radius: 70% 70% 0 70% / 70% 70% 0 10%;
+  }
+  36% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  44.4% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  49.6% {
+    background-color: orange;
+    transform: rotate(45deg) scale(0.8);
+    border-radius: 70% 70% 0 70% / 70% 70% 0 10%;
+  }
+  56.4% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  66.7% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+  71.8% {
+    background-color: orange;
+    transform: rotate(45deg) scale(0.8);
+    border-radius: 70% 70% 0 70% / 70% 70% 0 10%;
+  }
+  77% {
+    background-color: rgb(247, 108, 108);
+    transform: rotate(45deg) scale(1);
+    border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0;
+  }
+}
+
+button {
+  color: black;
+  padding: 4px 16px;
+}
+
+.p {
+  text-align: center;
+  font-size: 13px;
+  padding-top: 120px;
+}
+
+.p a {
+  color: lightblue;
+}
+
+/*@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800');
+*/

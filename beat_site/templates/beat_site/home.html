@@ -1,9 +1,20 @@
 {% load static %}
-
-<html style="background-color: #659DBD">
+<!doctype html>
+<html lang="en">
   <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="{% static 'beat_site/home.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=B612&display=swap" rel="stylesheet">
+
+    <title>CS 109 Project</title>
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+
       google.charts.load('current', {
         'packages':['geochart'],
         'mapsApiKey': 'AIzaSyBfVqEwUJ55bkc9_jmBJmR0sk9N6SO-Z6I'
@@ -24,10 +35,10 @@
         view.setColumns([0, 1]);
 
         var options = {
-            colorAxis: {colors: ['white', '#AC3B61']},
+            colorAxis: {colors: ['white', '#F76c6c']},
             backgroundColor: { fill:'transparent' },
             tooltip: { isHtml: true },
-            datalessRegionColor: 'grey',
+            datalessRegionColor: 'white',
         };
 
         var chart = new google.visualization.GeoChart(document.getElementById('id_map'));
@@ -35,14 +46,6 @@
         function myClickHandler(){
             var selection = chart.getSelection()[0];
             var country = dataTable.getValue(selection.row, 0);
-            if (country != 'United States'){
-              alert('Sorry no file for ' + country);
-            }
-            else{
-              document.getElementById("US").style.display = "block";
-              var audio= document.getElementById("US");
-              audio.play();
-            }
             return country;
         }
 
@@ -51,16 +54,116 @@
         chart.draw(view, options);
       }
     </script>
-  </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<!--     <script src="./myChart.js"></script>
+ -->  </head>
   <body>
-    <div style="text-align: center;">
-      <h1>Sonification of Infant Mortality Rates</h1>
-      <audio controls style="display: none; position:absolute;
- " id='US'>
-        <source src="{% static 'beat_site/Sound_Logo.mp3' %}" type="audio/mp3">
-        Your browser does not support the audio element.
-      </audio>
-      <div id="id_map" style="width: 1000px; height: 600px; display: inline-block;"></div>
+    <div class ="MainContainer">
+      <div class="ParallaxContainer">
+        <h1 class="title">
+          Analyzing and Modeling Infant Mortality
+        </h1><br>
+      </div>
+    <div class="ContentContainer">
+      <div class="Content">
+        <h1 class="page-title">A Current Overview</h1>
+        <div id="id_map" class="map"></div>
+        <p>This is the current state of infant mortality worldwide</p>
+      </div>
     </div>
+      <div class="LightParallaxContainer">
+        <div class="column">
+          <h1 class="title">
+            A Sonic Representation
+          </h1>
+          <div class="container">
+              <canvas id="worldChart"></canvas>
+          </div>
+        </div>
+        <div class="column" style="padding-right: 100px">
+          <p>Click the heart to start</p>
+          <div id="heart" class="heart">
+            <audio id="heartbeat" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/heartbeat.mp3" preload="auto">
+              Your browser does not support the <code>audio</code> element.
+            </audio>
+          </div>
+          <div class="buttons" style="text-align: center; visibility: hidden;">
+            <button id="reset" class="btn btn-light">Reset</button>
+          </div>
+          </div>
+        </div>
+
+
+    <script type="text/javascript">
+      var playBtn = document.getElementById('heart'),
+      resetBtn = document.getElementById('reset'),
+      heart = document.getElementById('heart'),
+      hearbeat = document.getElementById('heartbeat');
+      var endpoint = 'api/data';
+      var labels = ["1990", "1991", "1992", "1993", "1994",
+            "1995", "1996", "1997", "1998", "1999", "2000",
+            "2000", "2001", "2002", "2003", "2004", "2005",
+            "2006", "2007", "2008", "2009", "2010", "2011",
+            "2012", "2013", "2014", "2015", "2016", "2017", 
+            "2018", "2019"];
+      var imrData = [];
+
+      setChart(labels, imrData)
+
+      function setChart(labels){
+        var worldChart = new Chart(document.getElementById("worldChart"), {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [{
+                  label: 'Mortality rate, infant (per 1,000 live births)',
+                  data: imrData,
+              }]
+            }
+        })
+      }
+
+      function addData(){
+        jQuery.ajax({
+          method:"GET",
+          url:endpoint,
+          success: function(data){
+            labels = data.labels
+            imrData = data.rates
+            console.log("set data")
+            setChart(labels, imrData)
+            console.log(data)
+          },
+          error: function(error_data){
+            console.log("error")
+            console.log(error_data)
+          },
+        })
+        // worldChart.data.datasets[0].data = IMR;
+        // worldChart.update();
+      }
+
+      playBtn.addEventListener('click', function() {
+        if (!heart.classList.contains('active')) {
+          heart.classList.add('active');
+          heartbeat.play();
+          resetBtn.style.visibility = "visible";
+          addData()
+        }
+      }, false);
+
+      resetBtn.addEventListener('click', function() {
+        heart.classList.remove('active');
+        heartbeat.pause();
+        heartbeat.currentTime = 0;
+        resetBtn.style.visibility = "hidden";
+      }, false);
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
 </html>
