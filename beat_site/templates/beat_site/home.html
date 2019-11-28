@@ -1,20 +1,91 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends "beat_site/base.html" %}
+  {% block content %}
+  {% load static %}
+    <div class ="MainContainer">
+      <div class="ParallaxContainer">
+        <h1 class="title">
+          Analyzing and Modeling Infant Mortality
+        </h1><br>
+      </div>
+    <div class="ContentContainer">
+      <div class="Content">
+        <h1 class="page-title">A Current Overview</h1>
+        <div id="id_map" class="map"></div>
+        <p>This is the current state of infant mortality worldwide</p>
+      </div>
+    </div>
+      <div class="LightParallaxContainer">
+        <div class="column">
+          <h1 class="title">
+            A Sonic Representation
+          </h1>
+          <div class="container">
+              <canvas id="worldChart"></canvas>
+          </div>
+        </div>
+        <div class="column" style="padding-right: 100px">
+          <div class="dropdown center">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dataSelect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Select Data
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#" id="Linear">Average Worldwide Rate per Year</a>
+              <a class="dropdown-item" href="#" id="Distribution">Distribution of Frequency of Rates Over Time</a>
+            </div>
+          </div>
+          <p id="playDesc" style="visibility: hidden;">Click the heart to start</p>
+          <div id="heart" class="heart">
+            <audio id="heartbeat" src="{% static 'beat_site/heartbeat.wav' %}" preload="auto" type="audio/wav">
+              Your browser does not support the <code>audio</code> element.
+            </audio>
+            <audio id="hospital" src="{% static 'beat_site/hospital.wav' %}" preload="auto" type="audio/wav">
+              Your browser does not support the <code>audio</code> element.
+            </audio>
+          </div>
+          <div class="buttons" style="text-align: center; visibility: hidden;">
+            <button id="reset" class="btn btn-light">Reset</button>
+          </div>
+        </div>
+      </div>
 
-    <link rel="stylesheet" href="{% static 'beat_site/home.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=B612&display=swap" rel="stylesheet">
+      <div class="LightContentContainer">
+        <h1 class="page-title" style="color: white; padding-top: 300px; margin-bottom: -100px;">Time to Condition!</h1>
+        <div class="Content" style="padding-bottom: 250px">
+          <div class="card text-center shadow-lg p-3 mb-5 bg-black rounded">
+            <div class="card-header">Pick aspects you want to condition on</div>
+              <form method="POST">{% csrf_token %}
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      <h2 class="card-title">Year</h2>
+                      <select name="year" class="selectpicker form-control-lg" data-live-search="true" data-style="btn-secondary">
+                          <option data-tokens="none">none</option>
+                        {% for year in range %}
+                          <option data-tokens="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-sm">
+                      <h2 class="card-title">Other Metrics</h2>
+                      <select name="condition" class="selectpicker form-control-lg" data-live-search="true" data-style="btn-secondary">
+                        <option data-tokens="GDP">GDP</option>
+                        <option data-tokens="CO2 Emissions">CO2 Emissions</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <input type="submit" value="SUBMIT" class="btn btn-secondary btn-large">
+              </form>
+          </div>
+        </div>
+      </div>
 
-    <title>CS 109 Project</title>
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      </div>
+    </div>
+
     <script type="text/javascript">
-
+      //Google map API
       google.charts.load('current', {
         'packages':['geochart'],
         'mapsApiKey': 'AIzaSyBfVqEwUJ55bkc9_jmBJmR0sk9N6SO-Z6I'
@@ -53,65 +124,23 @@
 
         chart.draw(view, options);
       }
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<!--     <script src="./myChart.js"></script>
- -->  </head>
-  <body>
-    <div class ="MainContainer">
-      <div class="ParallaxContainer">
-        <h1 class="title">
-          Analyzing and Modeling Infant Mortality
-        </h1><br>
-      </div>
-    <div class="ContentContainer">
-      <div class="Content">
-        <h1 class="page-title">A Current Overview</h1>
-        <div id="id_map" class="map"></div>
-        <p>This is the current state of infant mortality worldwide</p>
-      </div>
-    </div>
-      <div class="LightParallaxContainer">
-        <div class="column">
-          <h1 class="title">
-            A Sonic Representation
-          </h1>
-          <div class="container">
-              <canvas id="worldChart"></canvas>
-          </div>
-        </div>
-        <div class="column" style="padding-right: 100px">
-          <p>Click the heart to start</p>
-          <div id="heart" class="heart">
-            <audio id="heartbeat" src="{% static 'beat_site/heartbeat.wav' %}" preload="auto" type="audio/wav">
-              Your browser does not support the <code>audio</code> element.
-            </audio>
-            <audio id="hospital" src="{% static 'beat_site/hospital.wav' %}" preload="auto" type="audio/wav">
-              Your browser does not support the <code>audio</code> element.
-            </audio>
-          </div>
-          <div class="buttons" style="text-align: center; visibility: hidden;">
-            <button id="reset" class="btn btn-light">Reset</button>
-          </div>
-          </div>
-        </div>
 
-
-    <script type="text/javascript">
+      //Sonic Representation
       var playBtn = document.getElementById('heart'),
       resetBtn = document.getElementById('reset'),
       heart = document.getElementById('heart'),
       hearbeat = document.getElementById('heartbeat');
       var endpoint = 'api/data';
       var delay = 2000;
+      var linearDropdown = document.getElementById("Linear")
+      var distributionDropdown = document.getElementById("Distribution")
 
       var worldChart = new Chart(document.getElementById("worldChart"), {
           type: 'line',
           data: {
             labels: [],
             datasets: [{
-                label: 'Mortality rate, infant (per 1,000 live births)',
+                label: 'Worldwide Mortality rate, infant (per 1,000 live births)',
                 data: [],
                 backgroundColor: 'rgba(247, 108, 108, 0.5)',
                 pointRadius: 5,
@@ -123,34 +152,60 @@
           }
       })
 
-      function addData(index, delay){
+      function graph(index, delay){
         $.ajax({
           method:"GET",
-          url:endpoint,
+          url: endpoint,
           success: function(data){
-            labels = data.labels
-            imrData = data.rates
-            // Reset animation
-            if (heart.classList.contains('active')) {
-              heart.classList.remove('active');
-              void heart.offsetWidth;
-            }
-            delay = 40000 / (imrData[index]);
-            if (index < imrData.length){
-              console.log(delay)
-              //Update graph of IMR
-              worldChart.data.labels.push(labels[index]);
-              worldChart.data.datasets[0].data.push(imrData[index]);
-              worldChart.update()
-              //Play and beat heart
-              if (!heart.classList.contains('active')) {
-                heartbeat.play();
-                heart.classList.add('active')
+            //Linear sonic representation
+            if (linearDropdown.className == "dropdown-item active"){
+              labels = data[0].labels
+              imrData = data[0].rates
+              // Reset animation
+              if (heart.classList.contains('active')) {
+                heart.classList.remove('active');
+                void heart.offsetWidth;
               }
+              delay = 40000 / (imrData[index]);
+              if (index < imrData.length){
+                //Update graph of IMR
+                worldChart.data.labels.push(labels[index]);
+                worldChart.data.datasets[0].data.push(imrData[index]);
+                worldChart.update()
+                //Play and beat heart
+                if (!heart.classList.contains('active')) {
+                  heartbeat.play();
+                  heart.classList.add('active')
+                }
+                 setTimeout(
+                   function () { graph(index+1, delay); },
+                   delay // delay in ms
+                 );
+              }
+            } else if (distributionDropdown.className == "dropdown-item active") { //Distribution representation
+              frequencies = data[1]
+              labels = data[2].labels
+              delay = 750
+              // Reset animation
+              if (heart.classList.contains('active')) {
+                heart.classList.remove('active');
+                void heart.offsetWidth;
+              }
+              if (index < 2018){
+                //Set Graph
+                worldChart.data.labels = labels;
+                worldChart.data.datasets[0].label = String(index).concat(' Frequency of Infant Mortality Rates');
+                worldChart.data.datasets[0].data = frequencies[String(index)];
+                worldChart.update();
+                if (!heart.classList.contains('active')) {
+                  heartbeat.play();
+                  heart.classList.add('active')
+                }
                setTimeout(
-                 function () { addData(index+1, delay); },
+                 function () { graph(index+1, delay); },
                  delay // delay in ms
                );
+              }
             }
           },
           error: function(error_data){
@@ -162,10 +217,33 @@
 
       playBtn.addEventListener('click', function() {
         if (!heart.classList.contains('active')) {
-          // heart.classList.add('active');
-          hospital.play();
-          addData(0)
-          resetBtn.style.visibility = "visible";
+          if (linearDropdown.className == "dropdown-item active"){
+            worldChart.data.datasets[0] = {
+                label: 'Worldwide Mortality rate, infant (per 1,000 live births)',
+                data: [],
+                backgroundColor: 'rgba(247, 108, 108, 0.5)',
+                pointRadius: 5,
+                fill: false,
+                borderWidth: 5,
+                borderColor: 'rgba(247, 108, 108, 0.5)',
+                steppedLine: true,
+            }
+            worldChart.options.scales.yAxes[0].ticks.suggestedMax = null;
+            graph(0)
+            hospital.play();
+            resetBtn.style.visibility = "visible";
+          } else if (distributionDropdown.className == "dropdown-item active") {
+            worldChart.data.datasets[0] = {
+              type: 'line',
+              steppedLine: false,
+              fill: true,
+              backgroundColor: 'rgba(247, 108, 108, 0.5)',
+            }
+            worldChart.options.scales.yAxes[0].ticks.suggestedMax = 90;
+            graph(1990)
+            hospital.play();
+            resetBtn.style.visibility = "visible";
+          }
         }
       }, false);
 
@@ -178,12 +256,19 @@
         worldChart.data.datasets[0].data = []
         worldChart.update()
       }, false);
-    </script>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
-</html>
+      $("#Linear").click(function(e){
+        distributionDropdown.className = "dropdown-item";
+        linearDropdown.className = "dropdown-item active";
+        document.getElementById('playDesc').style.visibility = "visible";
+      e.preventDefault();
+      });
+      $("#Distribution").click(function(e){
+        distributionDropdown.className = "dropdown-item active";
+        linearDropdown.className = "dropdown-item";
+        document.getElementById('playDesc').style.visibility = "visible";
+      e.preventDefault();
+      });
+
+    </script>
+  {% endblock content %}

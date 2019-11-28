@@ -10,18 +10,21 @@ class CountryManager(models.Manager):
             reader = csv.DictReader(csvfile)
             iterator = 0
             for row in reader:
-                self.create(name=row['Country Name'], code=row['Country Code'], curr_rate=row['2017'])
+                self.get_or_create(name=row['Country Name'], code=row['Country Code'], curr_rate=row['2017'])
                 iterator += 1
                 print(row)
         return iterator
 
 class Country(models.Model):
-    objects = CountryManager()
-
     name = models.CharField(max_length=255)
     code = models.CharField(max_length=5, blank=True)
     curr_rate = models.FloatField(null=True, blank=True)
-    audio = models.FileField(null=True, blank=True)
+    gdp = models.FloatField(null=True, blank=True)
+    num_smokers = models.FloatField(null=True, blank=True)
+    rate = models.FloatField(null=True, blank=True)
+    year = models.IntegerField(null=True, blank=True)
+    co2 = models.FloatField(null=True, blank=True)
+
 
     def __str__(self):
         return self.name
@@ -34,3 +37,4 @@ class Country(models.Model):
 
     # def get_project_url(self, *args, **kwargs):
     #     return reverse('project-create') + '?country={}'.format(self.id)
+

@@ -1,0 +1,37 @@
+{% extends "beat_site/base.html" %}
+  {% block content %}
+  {% load static %}
+  <div class="LightContentContainer">
+    <div class="Content">
+      <h1 class="page-title">A 3D Representation</h1>
+      <div class="shadow bg-white rounded"id="myDiv" style="padding-left: 120px"></div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  	  //3D plot
+      Plotly.d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/api_docs/mt_bruno_elevation.csv', function(err, rows){
+      
+      var z_data = []
+
+      console.log(z_data)
+      var data = [{
+        z: z_data,
+        type: 'surface'
+              }];
+        
+      var layout = {
+        title: 'Mt Bruno Elevation',
+        autosize: false,
+        width: 500,
+        height: 500,
+        margin: {
+          l: 65,
+          r: 50,
+          b: 65,
+          t: 90,
+        }
+      };
+      Plotly.newPlot('myDiv', data, layout, {showSendToCloud: true});
+      });
+  </script>
+  {% endblock content %}
