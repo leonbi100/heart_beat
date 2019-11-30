@@ -18,7 +18,11 @@ h1 {
 .center {
   text-align: center;
   padding-bottom: 30px;
-  -webkit-animation: fadein 4s;
+}
+
+.border-3 {
+    background-color: rgb(36, 37, 130) !important;
+    border-width:3px !important;
 }
 
 .title {
@@ -33,10 +37,20 @@ h1 {
   font-family: 'B612', sans-serif;
   -webkit-animation: fadein 4s;
   padding-bottom: 50px
+  color: white;
+}
+
+.dist-page-title {
+  font-family: 'B612', sans-serif;
+  -webkit-animation: fadein 4s;
+  padding-bottom: 50px
+  color: white;
+  padding-top: 100px;
+  padding-bottom: 25px;
 }
 
 .map {
-  -webkit-animation: fadein 2s;
+  -webkit-animation: fadein 4s;
   width: 700px 
 }
 
@@ -60,12 +74,22 @@ h1 {
   display: block;
   background-color: rgb(168, 208, 230);
   z-index: 1;
+  height: 100vh;
+
 }
 
 .Content {
   max-width: 750px;
+  height: 100vh;
   margin: 0 auto;
   padding: 75px 0;
+}
+
+.GraphContent {
+  max-width: 70%;
+  margin: 0 auto;
+  padding-top: 75px;
+  padding-bottom: 300px
 }
 
 p {
@@ -80,11 +104,23 @@ p {
   flex: 1 0 auto;
   position: relative;
   z-index: -1;
-  height: 100vh;
+  height: 110vh;
   justify-content: center;
   align-items: center;
   transform: translateZ(-1px) scale(2);
   background: rgb(36, 48, 94);
+}
+
+.WhiteParallaxContainer {
+  display: flex;
+  flex: 1 0 auto;
+  position: relative;
+  z-index: -1;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  transform: translateZ(-1px) scale(2);
+  background: rgb(255, 255, 255);
 }
 
 .LightParallaxContainer {
@@ -92,7 +128,7 @@ p {
   flex: 1 0 auto;
   position: relative;
   z-index: -1;
-  height: 100vh;
+  height: 110vh;
   justify-content: center;
   align-items: center;
   transform: translateZ(-1px) scale(2);
@@ -107,7 +143,7 @@ p {
   flex: 1 0 auto;
   position: relative;
   z-index: -1;
-  height: 100vh;
+  height: 110vh;
   justify-content: center;
   align-items: center;
   background: rgb(168, 208, 230);

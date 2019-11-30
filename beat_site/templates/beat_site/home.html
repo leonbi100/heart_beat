@@ -1,7 +1,7 @@
 {% extends "beat_site/base.html" %}
   {% block content %}
   {% load static %}
-    <div class ="MainContainer">
+  <div class ="MainContainer">
       <div class="ParallaxContainer">
         <h1 class="title">
           Analyzing and Modeling Infant Mortality
@@ -47,42 +47,38 @@
           </div>
         </div>
       </div>
-
-      <div class="LightContentContainer">
-        <h1 class="page-title" style="color: white; padding-top: 300px; margin-bottom: -100px;">Time to Condition!</h1>
-        <div class="Content" style="padding-bottom: 250px">
-          <div class="card text-center shadow-lg p-3 mb-5 bg-black rounded">
-            <div class="card-header">Pick aspects you want to condition on</div>
-              <form method="POST">{% csrf_token %}
-                <div class="container">
-                  <div class="row">
-                    <div class="col-sm">
-                      <h2 class="card-title">Year</h2>
-                      <select name="year" class="selectpicker form-control-lg" data-live-search="true" data-style="btn-secondary">
-                          <option data-tokens="none">none</option>
-                        {% for year in range %}
-                          <option data-tokens="{{ year }}">{{ year }}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                    <div class="col-sm">
-                      <h2 class="card-title">Other Metrics</h2>
-                      <select name="condition" class="selectpicker form-control-lg" data-live-search="true" data-style="btn-secondary">
-                        <option data-tokens="GDP">GDP</option>
-                        <option data-tokens="CO2 Emissions">CO2 Emissions</option>
-                      </select>
+        <div class="LightContentContainer">
+          <h1 class="dist-page-title text-white">Time to Condition!</h1>
+          <div class="Content">
+            <div class="card text-center shadow-lg p-3 mb-5 bg-black rounded">
+              <div class="card-header">Pick aspects you want to condition on</div>
+                <form method="POST">{% csrf_token %}
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-sm">
+                        <h2 class="card-title">Year</h2>
+                        <select name="year" class="selectpicker form-control-lg" data-live-search="true" data-style="btn-secondary">
+                            <option data-tokens="All">All</option>
+                          {% for year in range %}
+                            <option data-tokens="{{ year }}">{{ year }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="col-sm">
+                        <h2 class="card-title">Other Metrics</h2>
+                        <select name="condition" class="selectpicker form-control-lg" data-live-search="true" data-style="btn-secondary">
+                          <option data-tokens="GDP">GDP</option>
+                          <option data-tokens="CO2 Emissions">CO2 Emissions</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <input type="submit" value="SUBMIT" class="btn btn-secondary btn-large">
-              </form>
+                  <input type="submit" value="SUBMIT" class="btn btn-secondary btn-large">
+                </form>
+            </div>
           </div>
         </div>
       </div>
-
-
-      </div>
-    </div>
 
     <script type="text/javascript">
       //Google map API
@@ -130,7 +126,7 @@
       resetBtn = document.getElementById('reset'),
       heart = document.getElementById('heart'),
       hearbeat = document.getElementById('heartbeat');
-      var endpoint = 'api/data';
+      var endpoint = 'api-data';
       var delay = 2000;
       var linearDropdown = document.getElementById("Linear")
       var distributionDropdown = document.getElementById("Distribution")
