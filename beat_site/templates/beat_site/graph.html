@@ -69,6 +69,13 @@
                </div>
               </div>
             </div>
+          <div class="LightContentContainer">
+            <h1 class="dist-page-title text-white">What distribution is this?</h1>
+            <div class="container">
+                <p>We can use Maximum Likelihood Estimation, given a variety of distributions, to find which distribution (and parameters) gives us the highest likelihood that we observed the data we have conditioned on.</p>
+                <p>Poisson, Normal, Pareto</p>
+            </div>
+          </div>
         </div>
   <script type="text/javascript">
       //3D plot
@@ -118,7 +125,8 @@
             data : {
                 'min': min,
                 'max': max,
-                'year': year
+                'year': year,
+                'condition': '{{ condition }}'
             },
             success: function(data){
                 if (year != 'all'){
@@ -128,7 +136,14 @@
                 }
                 distChart.data.labels = labels;
                 distChart.data.datasets[0].data = data.data;
+                distChart.data.datasets[1].data = data.poiss_pdf;
+                distChart.data.datasets[1].label = 'Poisson Lambda: '.concat(data.poiss_lambda);
+                distChart.data.datasets[2].data = data.norm_pdf;
+                distChart.data.datasets[2].label = 'Normal Mu: ';
+                distChart.data.datasets[3].data = data.pareto_pdf;
+                distChart.data.datasets[3].label = 'Pareto a: ';
                 distChart.update()
+
             },
             error: function(error_data){
                 console.log("error")
@@ -148,8 +163,38 @@
                 pointRadius: 0,
                 fill: false,
                 borderWidth: 5,
-                borderColor: 'rgba(247, 108, 108, 0.5)',
+                borderColor: 'rgba(247, 108, 108, 1)',
                 steppedLine: false,
+            },
+            {
+                data: [],
+                backgroundColor: 'rgba(103, 247, 108, 0.5)',
+                pointRadius: 0,
+                fill: false,
+                borderWidth: 5,
+                borderColor: 'rgba(103, 247, 108, 0.5)',
+                steppedLine: false,
+                hidden: true,
+            },
+            {
+                data: [],
+                backgroundColor: 'rgba(103, 0, 108, 0.5)',
+                pointRadius: 0,
+                fill: false,
+                borderWidth: 5,
+                borderColor: 'rgba(103, 0, 108, 0.5)',
+                steppedLine: false,
+                hidden: true,
+            },
+            {
+                data: [],
+                backgroundColor: 'rgba(103, 0, 108, 0.5)',
+                pointRadius: 0,
+                fill: false,
+                borderWidth: 5,
+                borderColor: 'rgba(103, 0, 108, 0.5)',
+                steppedLine: false,
+                hidden: true,
             }]
           }
       })
