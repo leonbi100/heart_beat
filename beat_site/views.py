@@ -169,7 +169,7 @@ def getIndex(entry):
         return 18
     elif entry > 190 and entry <= 200 :
         return 19
-    elif entry > 200:
+    elif entry > 200 and entry <= 2010:
         return 20
 
 def UpdateDist(request):
@@ -240,32 +240,68 @@ def UpdateDist(request):
     poiss_dist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     norm_dist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     pareto_dist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    weibull_dist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    bernoulli_dist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
     trials = 1000
 
+    print(poiss_likelihood)
+    print(norm_likelihood)
+
     for i in range(trials):
-        entry = np.random.poisson(poiss_mu)
-        poiss_dist[getIndex(entry)] += 1
+        entry = np.random.poisson(norm_mu)
+        try:
+            poiss_dist[getIndex(entry)] += 1
+        except:
+            pass
 
     for i in range(trials):
         entry = np.random.normal(norm_mu, norm_sig)
-        norm_dist[getIndex(entry)] += 1
+        try:
+            norm_dist[getIndex(entry)] += 1
+        except:
+            pass
 
     for i in range(trials):
         entry = np.random.pareto(pareto_a)
-        pareto_dist[getIndex(entry)] += 1
+        try:
+            pareto_dist[getIndex(entry)] += 1
+        except:
+            pass
 
+    for i in range(trials):
+        entry = np.random.weibull(100)
+        try:
+            weibull_dist[getIndex(entry)] += 1
+        except:
+            pass
+
+    for i in range(trials):
+        entry = np.random.binomial(1, 0.5)
+        try:
+            bernoulli_dist[getIndex(entry)] += 1
+        except:
+            pass
 
     pdf_data = [value / sum(year_data) for value in year_data]
     poiss_dist = [value / sum(poiss_dist) for value in poiss_dist]
     norm_dist = [value / sum(norm_dist) for value in norm_dist]
     pareto_dist = [value / sum(pareto_dist) for value in pareto_dist]
+    weibull_dist = [value / sum(weibull_dist) for value in weibull_dist]
+    bernoulli_dist = [value / sum(bernoulli_dist) for value in bernoulli_dist]
+    print(bernoulli_dist)
 
 
     return JsonResponse({'data':pdf_data,
+                        'answer': 'Normal',
                         'poiss_pdf':poiss_dist,
-                        'poiss_lambda':poiss_mu,
+                        'poiss_lambda':norm_mu,
                         'norm_pdf':norm_dist,
-                        'pareto_pdf':pareto_dist})
+                        'norm_param':[norm_mu, norm_sig],
+                        'pareto_pdf':pareto_dist,
+                        'pareto_a': pareto_a,
+                        'weibull_pdf': weibull_dist,
+                        'bernoulli_dist': bernoulli_dist})
 
 
 def pareto_mle(sample_data):
@@ -274,7 +310,6 @@ def pareto_mle(sample_data):
     k = min(sample_data)
     for data in sample_data:
         p_sum += math.log(data / k)
-    print(n / p_sum)
     return n / p_sum
 
 def poisson_mle(sample_data, year_data):
@@ -305,7 +340,7 @@ def normal_mle(sample_data, year_data):
     likelihood = 1
     norm_pdf = []
     for data in sample_data:
-        sig += ((data - mu)**2)
+        sig += ((data - mu)**2) / len(sample_data)
     sig /= len(sample_data)
 
     for data in sample_data:
