@@ -20,3 +20,4 @@ The meat of the project comes next when you can condition on any specific year o
 ![Alt Text](https://github.com/leonbi100/heart_beat/blob/master/data/2019-12-18%2020.09.53.gif)
 
 Finally we use maximum likelihood estimation to predict the best random variable distribution that best models the data we have conditioned on.
+![Alt Text](https://github.com/leonbi100/heart_beat/blob/master/data/2019-12-18%2020.11.42.gif)
