@@ -19,10 +19,3 @@ The meat of the project comes next when you can condition on any specific year o
 
 Finally we use maximum likelihood estimation to predict the best random variable distribution that best models the data we have conditioned on.
 ![Alt Text](https://github.com/leonbi100/heart_beat/blob/master/data/2019-12-18%2020.11.42.gif)
-
-
-## Built With
-
-* [Django 2.2](https://www.djangoproject.com/) - The web framework used
-* [Twilio](hhttps://www.twilio.com/) - Messaging API
-* [DarkSky_API](https://darksky.net/dev) - Weather API
